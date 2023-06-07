@@ -1,4 +1,5 @@
 import { BsStar, BsStarHalf, BsStarFill } from "react-icons/bs"
+import Rating from "./Rating"
 
 const Card = ({title, description, image, price, rating}) => {
   return (
@@ -7,13 +8,7 @@ const Card = ({title, description, image, price, rating}) => {
         <h1 className="text-lg font-bold">{title}</h1>
         <div className="flex items-center justify-between w-full">
           <p>${price}</p>
-          <div className="flex items-center">
-            {
-              rating <= 0.5
-              ? <><BsStarHalf/><BsStar/><BsStar/><BsStar/><BsStar/></>
-              : ''
-            }
-          </div>
+          <Rating rating={rating}/>
         </div>
     </div>
   )

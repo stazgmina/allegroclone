@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import Search from './components/Search'
 import Navbar from './components/Navbar'
@@ -7,18 +7,16 @@ import Card from './components/Card'
 
 import {BsCart,BsSearch,BsHeart,BsPerson} from 'react-icons/bs'
 
-const Page = () => {
-  const [products, setProducts] = useState([])
+const Page = ({products}) => {
+  const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(()=>{
-    fetch('https://fakestoreapi.com/products')
-    .then(res=>res.json())
-    .then(json=>setProducts(json))
-  },[])
+  if(searchTerm){
+    products = products.filter(p => p.title.toLowerCase().includes(searchTerm.toLocaleLowerCase()))
+  }  
 
   return (
     <>
-      <Search/>
+      <Search setSearchTerm={setSearchTerm}/>
       <Navbar/>
       <section className='flex flex-wrap items-center justify-center w-full gap-16 bg-white'>
         {products.map(product => (
@@ -30,3 +28,13 @@ const Page = () => {
 }
 
 export default Page
+
+export async function getServerSideProps(){
+  const products = await getProducts()
+
+  return{
+    props: {
+      products: products
+    }
+  }
+}
